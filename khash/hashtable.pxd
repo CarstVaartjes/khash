@@ -1,4 +1,4 @@
-from khash cimport kh_int64_t, kh_float64_t, kh_pymap_t, int64_t, float64_t
+from src.khash cimport kh_int64_t, kh_float64_t, kh_pymap_t, int64_t, float64_t
 
 # prototypes for sharing
 
