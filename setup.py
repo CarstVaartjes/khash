@@ -1,6 +1,7 @@
 from distutils.core import setup
 from distutils.extension import Extension
 from Cython.Distutils import build_ext
+import numpy as np
 
 setup(
     name='khash_test',
@@ -13,7 +14,7 @@ setup(
     description='A try out for a pandas-independent implementation of klib in Python'
 )
 
-inc_dirs = ['khash', 'khash/src/klib', 'khash/src']
+inc_dirs = [np.get_include(), 'khash', 'khash/src/klib', 'khash/src']
 lib_dirs = []
 libs = []
 def_macros = []

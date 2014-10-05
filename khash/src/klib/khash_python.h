@@ -2,6 +2,28 @@
 
 #include "khash.h"
 
+// util functions
+kh_inline char* get_c_string(PyObject* obj) {
+#if PY_VERSION_HEX >= 0x03000000
+  PyObject* enc_str = PyUnicode_AsEncodedString(obj, "utf-8", "error");
+
+  char *ret;
+  ret = PyBytes_AS_STRING(enc_str);
+
+  // TODO: memory leak here
+
+  // Py_XDECREF(enc_str);
+  return ret;
+#else
+  return PyString_AsString(obj);
+#endif
+}
+
+kh_inline int
+is_string_object(PyObject* obj) {
+  return (PyString_Check(obj) || PyUnicode_Check(obj));
+}
+
 // kludge
 
 #define kh_float64_hash_func _Py_HashDouble
@@ -13,7 +35,7 @@
 KHASH_MAP_INIT_FLOAT64(float64, size_t)
 
 
-int pyobject_cmp(PyObject* a, PyObject* b) {
+int kh_inline pyobject_cmp(PyObject* a, PyObject* b) {
 	int result = PyObject_RichCompareBool(a, b, Py_EQ);
 	if (result < 0) {
 		PyErr_Clear();
