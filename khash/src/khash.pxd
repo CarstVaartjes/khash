@@ -11,6 +11,8 @@ cdef extern from "khash_python.h":
         PyObject **keys
         size_t *vals
 
+    inline int is_string_object(object)
+    inline char* get_c_string(object)
     inline kh_pymap_t* kh_init_pymap()
     inline void kh_destroy_pymap(kh_pymap_t*)
     inline void kh_clear_pymap(kh_pymap_t*)

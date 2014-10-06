@@ -21,12 +21,15 @@ def_macros = []
 sources = ["./khash/hashtable.pyx"]
 
 ext_modules = [
-    Extension("hashtable", ["./khash/hashtable.pyx"])
+    Extension("hashtable",
+              ["./khash/hashtable.pyx"],
+              include_dirs=inc_dirs
+    )
 ]
 
 setup(
   name = 'vf_api',
   cmdclass = {'build_ext': build_ext},
-  include_dirs = inc_dirs,
+  # include_dirs = inc_dirs,
   ext_modules = ext_modules, requires=[]
 )
