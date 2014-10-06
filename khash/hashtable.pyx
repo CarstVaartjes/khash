@@ -1,6 +1,5 @@
 from cpython cimport PyObject, Py_INCREF, PyList_Check, PyTuple_Check
 
-from khash.src.klib cimport *
 from khash cimport *
 from numpy cimport *
 

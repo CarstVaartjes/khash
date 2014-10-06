@@ -137,10 +137,14 @@ typedef unsigned int khint32_t;
 typedef unsigned long khint32_t;
 #endif
 
+typedef double khfloat64_t;
+
 #if ULONG_MAX == ULLONG_MAX
-typedef unsigned long khint64_t;
+typedef unsigned long khuint64_t;
+typedef signed long khint64_t;
 #else
-typedef unsigned long long khint64_t;
+typedef unsigned long long khuint64_t;
+typedef signed long long khint64_t;
 #endif
 
 #ifdef _MSC_VER
