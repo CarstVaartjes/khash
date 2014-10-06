@@ -11,6 +11,7 @@ cimport numpy as cnp
 cnp.import_array()
 cnp.import_ufunc()
 
+ONAN = np.nan
 
 cdef extern from "Python.h":
     int PySlice_Check(object)
