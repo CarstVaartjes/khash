@@ -24,12 +24,21 @@ inc_dirs = [
 lib_dirs = []
 libs = []
 def_macros = []
-sources = ["khash/hashtable.pyx"]
+sources = [
+    "khash/hashtable.pyx",
+    "khash/hashtable.pxd"
+]
+
+lib_depends = [
+    "khash/src/util.pxd",
+    "khash/src/numpy_helper.h"
+]
 
 ext_modules = [
     Extension("khash.hashtable",
               sources,
-              include_dirs=inc_dirs
+              include_dirs=inc_dirs,
+              depends=lib_depends
     )
 ]
 
