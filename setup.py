@@ -14,22 +14,31 @@ setup(
     description='A try out for a pandas-independent implementation of klib in Python'
 )
 
-inc_dirs = [np.get_include(), 'khash', 'khash/src/klib', 'khash/src']
+inc_dirs = [
+    # 'khash',
+    'khash/src/klib',
+    'khash/src',
+    np.get_include(),
+]
+
 lib_dirs = []
 libs = []
 def_macros = []
-sources = ["./khash/hashtable.pyx"]
+sources = ["khash/hashtable.pyx"]
 
 ext_modules = [
-    Extension("hashtable",
-              ["./khash/hashtable.pyx"],
+    Extension("khash.hashtable",
+              sources,
               include_dirs=inc_dirs
     )
 ]
 
+cmdclass = {'build_ext': build_ext}
+
 setup(
-  name = 'vf_api',
-  cmdclass = {'build_ext': build_ext},
-  # include_dirs = inc_dirs,
-  ext_modules = ext_modules, requires=[]
+    name='vf_api',
+    cmdclass=cmdclass,
+    # include_dirs = inc_dirs,
+    ext_modules=ext_modules,
+    requires=[]
 )
