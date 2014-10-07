@@ -33,9 +33,12 @@ ext_modules = [
     )
 ]
 
+cmdclass = {'build_ext': build_ext}
+
 setup(
-  name = 'vf_api',
-  cmdclass = {'build_ext': build_ext},
-  # include_dirs = inc_dirs,
-  ext_modules = ext_modules, requires=[]
+    name='vf_api',
+    cmdclass=cmdclass,
+    # include_dirs = inc_dirs,
+    ext_modules=ext_modules,
+    requires=[]
 )
