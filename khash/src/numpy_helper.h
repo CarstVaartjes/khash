@@ -1,18 +1,7 @@
 #include "Python.h"
 #include "numpy/arrayobject.h"
 #include "numpy/arrayscalars.h"
-
-#ifndef PANDAS_INLINE
-  #if defined(__GNUC__)
-    #define PANDAS_INLINE __inline__
-  #elif defined(_MSC_VER)
-    #define PANDAS_INLINE __inline
-  #elif defined (__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
-    #define PANDAS_INLINE inline
-  #else
-    #define PANDAS_INLINE
-  #endif
-#endif
+#include "helper.h"
 
 #define PANDAS_FLOAT 0
 #define PANDAS_INT 1
@@ -41,6 +30,11 @@ infer_type(PyObject* obj) {
   else {
     return PANDAS_OBJECT;
   }
+}
+
+PANDAS_INLINE npy_int64
+get_nat(void) {
+  return NPY_MIN_INT64;
 }
 
 PANDAS_INLINE int

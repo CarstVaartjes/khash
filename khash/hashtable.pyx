@@ -6,13 +6,15 @@ from numpy cimport *
 
 import numpy as np
 
+ONAN = np.nan
+
 cimport cython
 cimport numpy as cnp
 
 cnp.import_array()
 cnp.import_ufunc()
 
-ONAN = np.nan
+cdef int64_t iNaT = get_nat()
 
 cdef extern from "Python.h":
     int PySlice_Check(object)
