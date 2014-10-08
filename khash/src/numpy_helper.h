@@ -43,11 +43,6 @@ infer_type(PyObject* obj) {
   }
 }
 
-PANDAS_INLINE npy_int64
-get_nat(void) {
-  return NPY_MIN_INT64;
-}
-
 PANDAS_INLINE npy_datetime
 get_datetime64_value(PyObject* obj) {
   return ((PyDatetimeScalarObject*) obj)->obval;
@@ -79,30 +74,6 @@ is_string_object(PyObject* obj) {
   return (PyString_Check(obj) || PyUnicode_Check(obj));
 }
 
-PANDAS_INLINE int
-is_datetime64_object(PyObject *obj) {
-  return PyArray_IsScalar(obj, Datetime);
-}
-
-PANDAS_INLINE int
-is_timedelta64_object(PyObject *obj) {
-  return PyArray_IsScalar(obj, Timedelta);
-}
-
-PANDAS_INLINE int
-assign_value_1d(PyArrayObject* ap, Py_ssize_t _i, PyObject* v) {
-  npy_intp i = (npy_intp) _i;
-  char *item = (char *) PyArray_DATA(ap) + i * PyArray_STRIDE(ap, 0);
-  return PyArray_DESCR(ap)->f->setitem(v, item, ap);
-}
-
-PANDAS_INLINE PyObject*
-get_value_1d(PyArrayObject* ap, Py_ssize_t i) {
-  char *item = (char *) PyArray_DATA(ap) + i * PyArray_STRIDE(ap, 0);
-  return PyArray_Scalar(item, PyArray_DESCR(ap), (PyObject*) ap);
-}
-
-
 PANDAS_INLINE char*
 get_c_string(PyObject* obj) {
 #if PY_VERSION_HEX >= 0x03000000
@@ -117,15 +88,6 @@ get_c_string(PyObject* obj) {
   return ret;
 #else
   return PyString_AsString(obj);
-#endif
-}
-
-PANDAS_INLINE PyObject*
-char_to_string(char* data) {
-#if PY_VERSION_HEX >= 0x03000000
-    return PyUnicode_FromString(data);
-#else
-    return PyString_FromString(data);
 #endif
 }
 
