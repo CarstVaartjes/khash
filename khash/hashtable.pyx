@@ -351,7 +351,7 @@ cdef class Int32HashTable(HashTable):
         return reverse, labels
 
 cdef class Int64HashTable: #(HashTable):
-    # cdef kh_int64_t *table
+    # cdef khint64_t *table
 
     def __cinit__(self, size_hint=1):
         self.table = kh_init_int64()
@@ -906,7 +906,7 @@ cdef class Int64Factorizer:
         return labels
 
 
-cdef build_count_table_int64(ndarray[int64_t] values, kh_int64_t *table):
+cdef build_count_table_int64(ndarray[int64_t] values, khint64_t *table):
     cdef:
         int k
         Py_ssize_t i, n = len(values)
@@ -927,7 +927,7 @@ cdef build_count_table_int64(ndarray[int64_t] values, kh_int64_t *table):
 cpdef value_count_int64(ndarray[int64_t] values):
     cdef:
         Py_ssize_t i
-        kh_int64_t *table
+        khint64_t *table
         int ret = 0
         int k
 
@@ -1029,7 +1029,7 @@ def mode_int64(ndarray[int64_t] values):
         int val, max_val = 2
         int j = -1 # so you can do +=
         int k
-        kh_int64_t *table
+        khint64_t *table
         list uniques = []
 
     table = kh_init_int64()

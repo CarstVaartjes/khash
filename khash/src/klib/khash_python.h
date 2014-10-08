@@ -13,7 +13,7 @@
 KHASH_MAP_INIT_FLOAT64(float64, size_t)
 
 
-int PANDAS_INLINE pyobject_cmp(PyObject* a, PyObject* b) {
+int kh_inline pyobject_cmp(PyObject* a, PyObject* b) {
 	int result = PyObject_RichCompareBool(a, b, Py_EQ);
 	if (result < 0) {
 		PyErr_Clear();

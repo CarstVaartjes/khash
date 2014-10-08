@@ -56,37 +56,37 @@ cdef extern from "khash_python.h":
     bint kh_exist_str(kh_str_t*, khiter_t)
 
 
-    ctypedef struct kh_int64_t:
+    ctypedef struct khint64_t:
         khint_t n_buckets, size, n_occupied, upper_bound
         uint32_t *flags
         int64_t *keys
         size_t *vals
 
-    inline kh_int64_t* kh_init_int64()
-    inline void kh_destroy_int64(kh_int64_t*)
-    inline void kh_clear_int64(kh_int64_t*)
-    inline khint_t kh_get_int64(kh_int64_t*, int64_t)
-    inline void kh_resize_int64(kh_int64_t*, khint_t)
-    inline khint_t kh_put_int64(kh_int64_t*, int64_t, int*)
-    inline void kh_del_int64(kh_int64_t*, khint_t)
+    inline khint64_t* kh_init_int64()
+    inline void kh_destroy_int64(khint64_t*)
+    inline void kh_clear_int64(khint64_t*)
+    inline khint_t kh_get_int64(khint64_t*, int64_t)
+    inline void kh_resize_int64(khint64_t*, khint_t)
+    inline khint_t kh_put_int64(khint64_t*, int64_t, int*)
+    inline void kh_del_int64(khint64_t*, khint_t)
 
-    bint kh_exist_int64(kh_int64_t*, khiter_t)
+    bint kh_exist_int64(khint64_t*, khiter_t)
 
-    ctypedef struct kh_float64_t:
+    ctypedef struct khfloat64_t:
         khint_t n_buckets, size, n_occupied, upper_bound
         uint32_t *flags
         float64_t *keys
         size_t *vals
 
-    inline kh_float64_t* kh_init_float64()
-    inline void kh_destroy_float64(kh_float64_t*)
-    inline void kh_clear_float64(kh_float64_t*)
-    inline khint_t kh_get_float64(kh_float64_t*, float64_t)
-    inline void kh_resize_float64(kh_float64_t*, khint_t)
-    inline khint_t kh_put_float64(kh_float64_t*, float64_t, int*)
-    inline void kh_del_float64(kh_float64_t*, khint_t)
+    inline khfloat64_t* kh_init_float64()
+    inline void kh_destroy_float64(khfloat64_t*)
+    inline void kh_clear_float64(khfloat64_t*)
+    inline khint_t kh_get_float64(khfloat64_t*, float64_t)
+    inline void kh_resize_float64(khfloat64_t*, khint_t)
+    inline khint_t kh_put_float64(khfloat64_t*, float64_t, int*)
+    inline void kh_del_float64(khfloat64_t*, khint_t)
 
-    bint kh_exist_float64(kh_float64_t*, khiter_t)
+    bint kh_exist_float64(khfloat64_t*, khiter_t)
 
     ctypedef struct kh_int32_t:
         khint_t n_buckets, size, n_occupied, upper_bound
