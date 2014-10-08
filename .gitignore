@@ -59,3 +59,7 @@ build
 
 # Pycharm
 .idea/
+
+# Cython files
+khash/hashtable.c
+khash/hashtable.so
