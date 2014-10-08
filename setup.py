@@ -51,3 +51,6 @@ setup(
     ext_modules=ext_modules,
     requires=[]
 )
+
+# Compiled with:
+# cython.__version__ = '0.20.2'
