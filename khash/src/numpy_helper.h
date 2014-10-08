@@ -50,26 +50,6 @@ get_datetime64_value(PyObject* obj) {
 }
 
 PANDAS_INLINE int
-is_integer_object(PyObject* obj) {
-  return (!PyBool_Check(obj)) && PyArray_IsIntegerScalar(obj);
-//  return PyArray_IsIntegerScalar(obj);
-}
-
-PANDAS_INLINE int
-is_float_object(PyObject* obj) {
-  return (PyFloat_Check(obj) || PyArray_IsScalar(obj, Floating));
-}
-PANDAS_INLINE int
-is_complex_object(PyObject* obj) {
-  return (PyComplex_Check(obj) || PyArray_IsScalar(obj, ComplexFloating));
-}
-
-PANDAS_INLINE int
-is_bool_object(PyObject* obj) {
-  return (PyBool_Check(obj) || PyArray_IsScalar(obj, Bool));
-}
-
-PANDAS_INLINE int
 is_string_object(PyObject* obj) {
   return (PyString_Check(obj) || PyUnicode_Check(obj));
 }
@@ -90,29 +70,3 @@ get_c_string(PyObject* obj) {
   return PyString_AsString(obj);
 #endif
 }
-
-void set_array_owndata(PyArrayObject *ao) {
-    ao->flags |= NPY_OWNDATA;
-}
-
-void set_array_not_contiguous(PyArrayObject *ao) {
-    ao->flags &= ~(NPY_C_CONTIGUOUS | NPY_F_CONTIGUOUS);
-}
-
-
-// PANDAS_INLINE PyObject*
-// get_base_ndarray(PyObject* ap) {
-//   // if (!ap || (NULL == ap)) {
-//   //   Py_RETURN_NONE;
-//   // }
-
-//   while (!PyArray_CheckExact(ap)) {
-//     ap = PyArray_BASE((PyArrayObject*) ap);
-//     if (ap == Py_None) Py_RETURN_NONE;
-//   }
-//   // PyArray_BASE is a borrowed reference
-//   if(ap) {
-//     Py_INCREF(ap);
-//   }
-//   return ap;
-// }
