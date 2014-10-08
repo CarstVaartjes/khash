@@ -43,12 +43,6 @@ infer_type(PyObject* obj) {
   }
 }
 
-PANDAS_INLINE npy_datetime
-get_datetime64_value(PyObject* obj) {
-  return ((PyDatetimeScalarObject*) obj)->obval;
-
-}
-
 PANDAS_INLINE int
 is_string_object(PyObject* obj) {
   return (PyString_Check(obj) || PyUnicode_Check(obj));
