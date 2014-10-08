@@ -252,7 +252,7 @@ cdef class StringHashTable(HashTable):
         return reverse, labels
 
 cdef class Int32HashTable(HashTable):
-    cdef kh_int32_t *table
+    cdef khint32_t *table
 
     def __init__(self, size_hint=1):
         if size_hint is not None:

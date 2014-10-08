@@ -88,21 +88,21 @@ cdef extern from "khash_python.h":
 
     bint kh_exist_float64(khfloat64_t*, khiter_t)
 
-    ctypedef struct kh_int32_t:
+    ctypedef struct khint32_t:
         khint_t n_buckets, size, n_occupied, upper_bound
         uint32_t *flags
         int32_t *keys
         size_t *vals
 
-    inline kh_int32_t* kh_init_int32()
-    inline void kh_destroy_int32(kh_int32_t*)
-    inline void kh_clear_int32(kh_int32_t*)
-    inline khint_t kh_get_int32(kh_int32_t*, int32_t)
-    inline void kh_resize_int32(kh_int32_t*, khint_t)
-    inline khint_t kh_put_int32(kh_int32_t*, int32_t, int*)
-    inline void kh_del_int32(kh_int32_t*, khint_t)
+    inline khint32_t* kh_init_int32()
+    inline void kh_destroy_int32(khint32_t*)
+    inline void kh_clear_int32(khint32_t*)
+    inline khint_t kh_get_int32(khint32_t*, int32_t)
+    inline void kh_resize_int32(khint32_t*, khint_t)
+    inline khint_t kh_put_int32(khint32_t*, int32_t, int*)
+    inline void kh_del_int32(khint32_t*, khint_t)
 
-    bint kh_exist_int32(kh_int32_t*, khiter_t)
+    bint kh_exist_int32(khint32_t*, khiter_t)
 
     # sweep factorize
 
