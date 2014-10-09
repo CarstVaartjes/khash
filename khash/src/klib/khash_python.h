@@ -2,7 +2,7 @@
 
 #include "khash.h"
 
-typedef double khfloat64_t
+typedef double khfloat64_t;
 // kludge
 
 #define kh_float64_hash_func _Py_HashDouble
