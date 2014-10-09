@@ -356,7 +356,6 @@ static const double __ac_HASH_UPPER = 0.77;
 
 #define KHASH_INIT2(name, SCOPE, khkey_t, khval_t, kh_is_map, __hash_func, __hash_equal) \
 	__KHASH_TYPE(name, khkey_t, khval_t)								                 \
-	__KHASH_PROTOTYPES(name, khkey_t, khval_t)                                           \
 	__KHASH_IMPL(name, SCOPE, khkey_t, khval_t, kh_is_map, __hash_func, __hash_equal)
 
 #define KHASH_INIT(name, khkey_t, khval_t, kh_is_map, __hash_func, __hash_equal) \
@@ -630,16 +629,14 @@ typedef const char *kh_cstr_t;
 	KHASH_INIT(name, kh_cstr_t, khval_t, 1, kh_str_hash_func, kh_str_hash_equal)
 
 
-/* Included by pandas into khash_python.h
 #define kh_exist_str(h, k) (kh_exist(h, k))
 #define kh_exist_float64(h, k) (kh_exist(h, k))
 #define kh_exist_int64(h, k) (kh_exist(h, k))
-#define kh_exist_int32(h, k) (kh_exist(h, k))*/
+#define kh_exist_int32(h, k) (kh_exist(h, k))
 
-/* Included by pandas into khash_python.h
 KHASH_MAP_INIT_STR(str, size_t)
 KHASH_MAP_INIT_INT(int32, size_t)
-KHASH_MAP_INIT_INT64(int64, size_t)*/
+KHASH_MAP_INIT_INT64(int64, size_t)
 
 
 #endif /* __AC_KHASH_H */
