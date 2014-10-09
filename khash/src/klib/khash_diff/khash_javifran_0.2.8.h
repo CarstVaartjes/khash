@@ -138,29 +138,34 @@ typedef unsigned long khint32_t;
 #endif
 
 #if ULONG_MAX == ULLONG_MAX
-typedef unsigned long khint64_t;
+typedef unsigned long khuint64_t;
+typedef signed long khint64_t;
 #else
-typedef unsigned long long khint64_t;
+typedef unsigned long long khuint64_t;
+typedef signed long long khint64_t;
 #endif
+
+/* Included by pandas into khash_python.h
+typedef double khfloat64_t;*/
 
 #ifdef _MSC_VER
 #define kh_inline __inline
 #else
 #define kh_inline inline
-#endif
 
 typedef khint32_t khint_t;
 typedef khint_t khiter_t;
 
-#define __ac_isempty(flag, i) ((flag[i>>4]>>((i&0xfU)<<1))&2)
-#define __ac_isdel(flag, i) ((flag[i>>4]>>((i&0xfU)<<1))&1)
-#define __ac_iseither(flag, i) ((flag[i>>4]>>((i&0xfU)<<1))&3)
-#define __ac_set_isdel_false(flag, i) (flag[i>>4]&=~(1ul<<((i&0xfU)<<1)))
-#define __ac_set_isempty_false(flag, i) (flag[i>>4]&=~(2ul<<((i&0xfU)<<1)))
-#define __ac_set_isboth_false(flag, i) (flag[i>>4]&=~(3ul<<((i&0xfU)<<1)))
-#define __ac_set_isdel_true(flag, i) (flag[i>>4]|=1ul<<((i&0xfU)<<1))
+#define __ac_isempty(flag, i) ((flag[i>>5]>>(i&0x1fU))&1)
+#define __ac_isdel(flag, i) (0)
+#define __ac_iseither(flag, i) __ac_isempty(flag, i)
+#define __ac_set_isdel_false(flag, i) (0)
+#define __ac_set_isempty_false(flag, i) (flag[i>>5]&=~(1ul<<(i&0x1fU)))
+#define __ac_set_isempty_true(flag, i) (flag[i>>5]|=(1ul<<(i&0x1fU)))
+#define __ac_set_isboth_false(flag, i) __ac_set_isempty_false(flag, i)
+#define __ac_set_isdel_true(flag, i) (0)
 
-#define __ac_fsize(m) ((m) < 16? 1 : (m)>>4)
+#define __ac_fsize(m) ((m) < 32? 1 : (m)>>5)
 
 #ifndef kroundup32
 #define kroundup32(x) (--(x), (x)|=(x)>>1, (x)|=(x)>>2, (x)|=(x)>>4, (x)|=(x)>>8, (x)|=(x)>>16, ++(x))
@@ -242,7 +247,7 @@ static const double __ac_HASH_UPPER = 0.77;
 			else { /* hash table size to be changed (shrink or expand); rehash */ \
 				new_flags = (khint32_t*)kmalloc(__ac_fsize(new_n_buckets) * sizeof(khint32_t));	\
 				if (!new_flags) return -1;								\
-				memset(new_flags, 0xaa, __ac_fsize(new_n_buckets) * sizeof(khint32_t)); \
+				memset(new_flags, 0xff, __ac_fsize(new_n_buckets) * sizeof(khint32_t)); \
 				if (h->n_buckets < new_n_buckets) {	/* expand */		\
 					khkey_t *new_keys = (khkey_t*)krealloc((void *)h->keys, new_n_buckets * sizeof(khkey_t)); \
 					if (!new_keys) { kfree(new_flags); return -1; }		\
@@ -263,7 +268,7 @@ static const double __ac_HASH_UPPER = 0.77;
 					khint_t new_mask;									\
 					new_mask = new_n_buckets - 1; 						\
 					if (kh_is_map) val = h->vals[j];					\
-					__ac_set_isdel_true(h->flags, j);					\
+					__ac_set_isempty_true(h->flags, j);					\
 					while (1) { /* kick-out process; sort of like in Cuckoo hashing */ \
 						khint_t k, i, step = 0; \
 						k = __hash_func(key);							\
@@ -273,7 +278,7 @@ static const double __ac_HASH_UPPER = 0.77;
 						if (i < h->n_buckets && __ac_iseither(h->flags, i) == 0) { /* kick out the existing element */ \
 							{ khkey_t tmp = h->keys[i]; h->keys[i] = key; key = tmp; } \
 							if (kh_is_map) { khval_t tmp = h->vals[i]; h->vals[i] = val; val = tmp; } \
-							__ac_set_isdel_true(h->flags, i); /* mark it as deleted in the old hash table */ \
+							__ac_set_isempty_true(h->flags, i); /* mark it as deleted in the old hash table */ \
 						} else { /* write the element and jump out of the loop */ \
 							h->keys[i] = key;							\
 							if (kh_is_map) h->vals[i] = val;			\
@@ -377,6 +382,7 @@ static const double __ac_HASH_UPPER = 0.77;
   @abstract     64-bit integer comparison function
  */
 #define kh_int64_hash_equal(a, b) ((a) == (b))
+
 /*! @function
   @abstract     const char* hash function
   @param  s     Pointer to a null terminated string
@@ -426,7 +432,7 @@ static kh_inline khint_t __ac_Wang_hash(khint_t key)
   @param  name  Name of the hash table [symbol]
   @return       Pointer to the hash table [khash_t(name)*]
  */
-#define kh_init(name) kh_init_##name()
+#define kh_init(name) kh_init_##name(void)
 
 /*! @function
   @abstract     Destroy a hash table.
@@ -587,6 +593,9 @@ static kh_inline khint_t __ac_Wang_hash(khint_t key)
   @abstract     Instantiate a hash map containing 64-bit integer keys
   @param  name  Name of the hash table [symbol]
  */
+#define KHASH_SET_INIT_UINT64(name)										\
+	KHASH_INIT(name, khuint64_t, char, 0, kh_int64_hash_func, kh_int64_hash_equal)
+
 #define KHASH_SET_INIT_INT64(name)										\
 	KHASH_INIT(name, khint64_t, char, 0, kh_int64_hash_func, kh_int64_hash_equal)
 
@@ -595,8 +604,12 @@ static kh_inline khint_t __ac_Wang_hash(khint_t key)
   @param  name  Name of the hash table [symbol]
   @param  khval_t  Type of values [type]
  */
+#define KHASH_MAP_INIT_UINT64(name, khval_t)								\
+	KHASH_INIT(name, khuint64_t, khval_t, 1, kh_int64_hash_func, kh_int64_hash_equal)
+
 #define KHASH_MAP_INIT_INT64(name, khval_t)								\
 	KHASH_INIT(name, khint64_t, khval_t, 1, kh_int64_hash_func, kh_int64_hash_equal)
+
 
 typedef const char *kh_cstr_t;
 /*! @function
@@ -613,5 +626,18 @@ typedef const char *kh_cstr_t;
  */
 #define KHASH_MAP_INIT_STR(name, khval_t)								\
 	KHASH_INIT(name, kh_cstr_t, khval_t, 1, kh_str_hash_func, kh_str_hash_equal)
+
+
+/* Included by pandas into khash_python.h
+#define kh_exist_str(h, k) (kh_exist(h, k))
+#define kh_exist_float64(h, k) (kh_exist(h, k))
+#define kh_exist_int64(h, k) (kh_exist(h, k))
+#define kh_exist_int32(h, k) (kh_exist(h, k))*/
+
+/* Included by pandas into khash_python.h
+KHASH_MAP_INIT_STR(str, size_t)
+KHASH_MAP_INIT_INT(int32, size_t)
+KHASH_MAP_INIT_INT64(int64, size_t)*/
+
 
 #endif /* __AC_KHASH_H */
