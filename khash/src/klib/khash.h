@@ -149,8 +149,6 @@ typedef unsigned long long khint64_t;
 #define kh_inline inline
 #endif
 
-typedef double khfloat64_t; // TODO: check if still working
-
 typedef khint32_t khint_t;
 typedef khint_t khiter_t;
 

@@ -1,7 +1,12 @@
 #include "Python.h"
 #include "numpy/arrayobject.h"
 #include "numpy/arrayscalars.h"
-#include "helper.h"
+
+#ifdef _MSC_VER
+#define kh_inline __inline
+#else
+#define kh_inline inline
+#endif
 
 #define PANDAS_FLOAT 0
 #define PANDAS_INT 1
@@ -10,7 +15,7 @@
 #define PANDAS_OBJECT 4
 #define PANDAS_DATETIME 5
 
-PANDAS_INLINE int
+kh_inline int
 infer_type(PyObject* obj) {
   if (PyBool_Check(obj)) {
     return PANDAS_BOOL;
@@ -32,17 +37,17 @@ infer_type(PyObject* obj) {
   }
 }
 
-PANDAS_INLINE npy_int64
+kh_inline npy_int64
 get_nat(void) {
   return NPY_MIN_INT64;
 }
 
-PANDAS_INLINE int
+kh_inline int
 is_string_object(PyObject* obj) {
   return (PyString_Check(obj) || PyUnicode_Check(obj));
 }
 
-PANDAS_INLINE char*
+kh_inline char*
 get_c_string(PyObject* obj) {
 #if PY_VERSION_HEX >= 0x03000000
   PyObject* enc_str = PyUnicode_AsEncodedString(obj, "utf-8", "error");
