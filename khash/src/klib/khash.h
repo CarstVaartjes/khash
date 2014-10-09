@@ -116,6 +116,7 @@ int main() {
 
 #ifndef __AC_KHASH_H
 #define __AC_KHASH_H
+#endif
 
 /*!
   @header
