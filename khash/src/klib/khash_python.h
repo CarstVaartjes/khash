@@ -2,7 +2,6 @@
 
 #include "khash.h"
 
-typedef double khfloat64_t;
 // kludge
 
 #define kh_float64_hash_func _Py_HashDouble
@@ -46,13 +45,3 @@ KHASH_SET_INIT_PYOBJECT(pyset)
 
 #define kh_exist_pymap(h, k) (kh_exist(h, k))
 #define kh_exist_pyset(h, k) (kh_exist(h, k))
-/*
-#define kh_exist_str(h, k) (kh_exist(h, k))
-#define kh_exist_float64(h, k) (kh_exist(h, k))
-#define kh_exist_int64(h, k) (kh_exist(h, k))
-#define kh_exist_int32(h, k) (kh_exist(h, k))
-*/
-
-/*KHASH_MAP_INIT_STR(strbox, kh_pyobject_t)
-KHASH_MAP_INIT_INT(int32, size_t)
-KHASH_MAP_INIT_INT64(int64, size_t)*/

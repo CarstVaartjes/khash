@@ -146,14 +146,13 @@ typedef unsigned long long khuint64_t;
 typedef signed long long khint64_t;
 #endif
 
-/* Included by pandas into khash_python.h
-typedef double khfloat64_t;*/
 
 #ifdef _MSC_VER
 #define kh_inline __inline
 #else
 #define kh_inline inline
 
+typedef double khfloat64_t;
 typedef khint32_t khint_t;
 typedef khint_t khiter_t;
 
