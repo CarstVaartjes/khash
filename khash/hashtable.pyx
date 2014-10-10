@@ -1,8 +1,9 @@
 from cpython cimport PyObject, Py_INCREF, PyList_Check, PyTuple_Check
 
 from khash cimport *
-from util cimport *
 from numpy cimport *
+
+cimport util
 
 import numpy as np
 
@@ -14,7 +15,7 @@ cimport numpy as cnp
 cnp.import_array()
 cnp.import_ufunc()
 
-cdef int64_t iNaT = get_nat()
+cdef int64_t iNaT = util.get_nat()
 
 cdef extern from "Python.h":
     int PySlice_Check(object)
@@ -148,11 +149,11 @@ cdef class StringHashTable(HashTable):
         kh_destroy_str(self.table)
 
     cdef inline int check_type(self, object val):
-        return is_string_object(val)
+        return util.is_string_object(val)
 
     cpdef get_item(self, object val):
         cdef khiter_t k
-        k = kh_get_str(self.table, get_c_string(val))
+        k = kh_get_str(self.table, util.get_c_string(val))
         if k != self.table.n_buckets:
             return self.table.vals[k]
         else:
@@ -161,7 +162,7 @@ cdef class StringHashTable(HashTable):
     def get_iter_test(self, object key, Py_ssize_t iterations):
         cdef Py_ssize_t i, val
         for i in range(iterations):
-            k = kh_get_str(self.table, get_c_string(key))
+            k = kh_get_str(self.table, util.get_c_string(key))
             if k != self.table.n_buckets:
                 val = self.table.vals[k]
 
@@ -171,7 +172,7 @@ cdef class StringHashTable(HashTable):
             int ret = 0
             char* buf
 
-        buf = get_c_string(key)
+        buf = util.get_c_string(key)
 
         k = kh_put_str(self.table, buf, &ret)
         self.table.keys[k] = key
@@ -190,7 +191,7 @@ cdef class StringHashTable(HashTable):
             kh_str_t *table = self.table
 
         for i in range(n):
-            buf = get_c_string(values[i])
+            buf = util.get_c_string(values[i])
             k = kh_get_str(table, buf)
             if k != table.n_buckets:
                 resbuf[i] = table.vals[k]
@@ -210,7 +211,7 @@ cdef class StringHashTable(HashTable):
 
         for i in range(n):
             val = values[i]
-            buf = get_c_string(val)
+            buf = util.get_c_string(val)
             k = kh_get_str(self.table, buf)
             if k == self.table.n_buckets:
                 k = kh_put_str(self.table, buf, &ret)
@@ -234,7 +235,7 @@ cdef class StringHashTable(HashTable):
 
         for i in range(n):
             val = values[i]
-            buf = get_c_string(val)
+            buf = util.get_c_string(val)
             k = kh_get_str(self.table, buf)
             if k != self.table.n_buckets:
                 idx = self.table.vals[k]
@@ -265,7 +266,7 @@ cdef class Int32HashTable(HashTable):
         kh_destroy_int32(self.table)
 
     cdef inline int check_type(self, object val):
-        return is_string_object(val)
+        return util.is_string_object(val)
 
     cpdef get_item(self, int32_t val):
         cdef khiter_t k
@@ -787,7 +788,7 @@ cdef class PyObjectHashTable(HashTable):
         for i in range(n):
             val = values[i]
             hash(val)
-            if not val == val:
+            if not val == val:  # _checknan
                 k = kh_get_pymap(self.table, <PyObject*>val)
                 if k == self.table.n_buckets:
                     k = kh_put_pymap(self.table, <PyObject*>val, &ret)
