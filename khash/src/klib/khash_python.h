@@ -45,3 +45,5 @@ KHASH_SET_INIT_PYOBJECT(pyset)
 
 #define kh_exist_pymap(h, k) (kh_exist(h, k))
 #define kh_exist_pyset(h, k) (kh_exist(h, k))
+
+KHASH_MAP_INIT_STR(strbox, kh_pyobject_t)
